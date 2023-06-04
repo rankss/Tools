@@ -20,6 +20,7 @@ namespace Tools
 	private:
 		static Logger instance;
 		bool active = false;
+		bool flag = true;
 		std::mutex mutex;
 		Level level = Level::TRACE;
 		std::ofstream fstream;
@@ -51,9 +52,7 @@ namespace Tools
 			instance.fstream << "Logger terminated." << std::endl;
 			instance.active = false;
 			if (instance.fstream.is_open())
-			{
 				instance.fstream.close();
-			}
 		}
 
 		std::string now()
@@ -73,11 +72,6 @@ namespace Tools
 			instance.start(Level::INFO, "logfile.log");
 		}
 
-		Logger(Level aLevel, const std::string& filepath)
-		{
-			instance.start(aLevel, filepath);
-		}
-
 		~Logger() 
 		{
 			instance.stop();
@@ -87,13 +81,20 @@ namespace Tools
 		{
 			return instance;
 		}
+
+		void SetLevel(Level aLevel)
+		{
+			this->level = aLevel;
+		}
 		
 		void Log(Level aLevel, const std::string& aMessage)
 		{
+			if (!flag) return;
 			if (aLevel >= instance.level && aLevel <= Level::CRITICAL)
 			{
 				std::lock_guard<std::mutex> lock(instance.mutex);
 				instance.fstream << instance.now() << " " << PRIORITY_MAP[(int)aLevel] << ": " << aMessage << std::endl;
+				// std::cout << instance.now() << " " << PRIORITY_MAP[(int)aLevel] << ": " << aMessage << std::endl; // Debug only
 			}
 		}
 	};

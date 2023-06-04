@@ -129,9 +129,13 @@
   <ItemGroup>
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="Logger.hpp" />
+    <ClInclude Include="Unionset.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
